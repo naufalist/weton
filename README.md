@@ -1,2 +1,2 @@
 # weton
-script sederhana menghitung jumlah weton jawa
+script sederhana menghitung jumlah weton jodoh
