@@ -134,7 +134,7 @@ echo "Masukkan tanggal lahir. Contoh: 17 08 1945"."\n";
 echo "----------\n";
 echo "Orang ke-1: ";
 $date1 = konversi(trim(fgets(STDIN)));
-echo "Orang ke-1: ";
+echo "Orang ke-2: ";
 $date2 = konversi(trim(fgets(STDIN)));
 echo "----------\n";
 echo "Orang ke-1: ".$date1['hari']." (".$date1['hari_val'].") + ".$date1['pasaran']." (".$date1['pasaran_val'].") = ".($date1['hari_val']+$date1['pasaran_val'])."\n";
