@@ -45,12 +45,12 @@ function konversi($date) {
 
 function hitungWeton($satu, $dua){
 
-    $jumlahWeton = [1 => 'Pegat',2 => 'Ratu',3 => 'Jodoh',4 => 'Topo',5 => 'Tinari',6 => 'Padu',7 => 'Sujanan',8 => 'Pesthi',9 => 'Pegat'];
+    $jumlahWeton = [1 => 'Pegat',2 => 'Ratu',3 => 'Jodoh',4 => 'Topo',5 => 'Tinari',6 => 'Padu',7 => 'Sujanan',8 => 'Pesthi'];
 
     $i = 1; $c = 1;
 
     while ($i <= 36) {
-        if (in_array($i, array(10, 19, 28)) and $i <= 36) {
+        if (in_array($i, array(9, 17, 25, 33)) and $i <= 36) {
             $c = 1;
         }
         if ($satu['hari_val']+$satu['pasaran_val']+$dua['hari_val']+$dua['pasaran_val'] == $i) {
