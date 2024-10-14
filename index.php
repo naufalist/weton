@@ -196,7 +196,7 @@ if (isset($_POST['submit'])) {
     $weton = "";
 
     while ($i <= 36) {
-        if (in_array($i, array(8, 17, 25, 33)) and $i <= 36) {
+        if (in_array($i, array(9, 17, 25, 33)) and $i <= 36) {
             $c = 1;
         }
         if ($p1['hari_val']+$p1['pasaran_val']+$p2['hari_val']+$p2['pasaran_val'] == $i) {
