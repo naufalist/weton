@@ -187,8 +187,7 @@ if (isset($_POST['submit'])) {
         5 => 'Tinari',
         6 => 'Padu',
         7 => 'Sujanan',
-        8 => 'Pesthi',
-        9 => 'Pegat'
+        8 => 'Pesthi'
     ];
 
     $i = 1;
@@ -197,7 +196,7 @@ if (isset($_POST['submit'])) {
     $weton = "";
 
     while ($i <= 36) {
-        if (in_array($i, array(10, 19, 28)) and $i <= 36) {
+        if (in_array($i, array(8, 17, 25, 33)) and $i <= 36) {
             $c = 1;
         }
         if ($p1['hari_val']+$p1['pasaran_val']+$p2['hari_val']+$p2['pasaran_val'] == $i) {
