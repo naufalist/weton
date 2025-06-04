@@ -1,43 +1,45 @@
 <?php
 
-function intPart($floatNum) {
-    return($floatNum<-0.0000001 ? ceil($floatNum-0.0000001) : floor($floatNum+0.0000001));
+function intPart($floatNum)
+{
+    return ($floatNum < -0.0000001 ? ceil($floatNum - 0.0000001) : floor($floatNum + 0.0000001));
 }
 
-function hdate($day,$month,$year) {
+function hdate($day, $month, $year)
+{
     $julian = GregorianToJD($month, $day, $year);
     if ($julian >= 1937808 && $julian <= 536838867) {
         $date = cal_from_jd($julian, CAL_GREGORIAN);
         $d = $date['day'];
         $m = $date['month'] - 1;
         $y = $date['year'];
-    
-        $mPart = ($m-13)/12;
-        $jd = intPart((1461*($y+4800+intPart($mPart)))/4)+
-        intPart((367*($m-1-12*(intPart($mPart))))/12)-
-        intPart((3*(intPart(($y+4900+intPart($mPart))/100)))/4)+$d-32075;
-    
-        $l = $jd-1948440+10632;
-        $n = intPart(($l-1)/10631);
-        $l = $l-10631*$n+354;
-        $j = (intPart((10985-$l)/5316))*(intPart((50*$l)/17719))+(intPart($l/5670))*(intPart((43*$l)/15238));
-        $l = $l-(intPart((30-$j)/15))*(intPart((17719*$j)/50))-(intPart($j/16))*(intPart((15238*$j)/43))+29;
-    
-        $m = intPart((24*$l)/709);
-        $d = $l-intPart((709*$m)/24);
-        $y = 30*$n+$j-30;
-        $yj = $y+512;
-        $h = ($julian+3)%5;
 
-        if($julian<=1948439) $y–;
-    
+        $mPart = ($m - 13) / 12;
+        $jd = intPart((1461 * ($y + 4800 + intPart($mPart))) / 4) +
+            intPart((367 * ($m - 1 - 12 * (intPart($mPart)))) / 12) -
+            intPart((3 * (intPart(($y + 4900 + intPart($mPart)) / 100))) / 4) + $d - 32075;
+
+        $l = $jd - 1948440 + 10632;
+        $n = intPart(($l - 1) / 10631);
+        $l = $l - 10631 * $n + 354;
+        $j = (intPart((10985 - $l) / 5316)) * (intPart((50 * $l) / 17719)) + (intPart($l / 5670)) * (intPart((43 * $l) / 15238));
+        $l = $l - (intPart((30 - $j) / 15)) * (intPart((17719 * $j) / 50)) - (intPart($j / 16)) * (intPart((15238 * $j) / 43)) + 29;
+
+        $m = intPart((24 * $l) / 709);
+        $d = $l - intPart((709 * $m) / 24);
+        $y = 30 * $n + $j - 30;
+        $yj = $y + 512;
+        $h = ($julian + 3) % 5;
+
+        if ($julian <= 1948439) $y–;
+
         return array(
             'day' => $date['day'],
             'month' => $date['month'],
             'year' => $date['year'],
             'dow' => $date['dow'],
             'hijriday' => $d,
-            'hijrimonth' => $m, 
+            'hijrimonth' => $m,
             'hijriyear' => $y,
             'javayear' => $yj,
             'javadow' => $h
@@ -47,7 +49,7 @@ function hdate($day,$month,$year) {
     }
 }
 
-$imonth = Array(
+$imonth = array(
     'Januari',
     'Februari',
     'Maret',
@@ -62,7 +64,7 @@ $imonth = Array(
     'Desember'
 );
 
-$amonth = Array(
+$amonth = array(
     'Muharram',
     'Safar',
     'Rabi\'ul Awal',
@@ -77,7 +79,7 @@ $amonth = Array(
     'Dzul Hijjah'
 );
 
-$jmonth = Array(
+$jmonth = array(
     'Suro',
     'Sapar',
     'Mulud',
@@ -92,7 +94,7 @@ $jmonth = Array(
     'Besar'
 );
 
-$aday = Array(
+$aday = array(
     'Al-Ahad',
     'Al-Itsnayna',
     'Ats-Tsalatsa',
@@ -102,7 +104,7 @@ $aday = Array(
     "As-Sabt"
 );
 
-$iday = Array(
+$iday = array(
     'Minggu',
     'Senin',
     'Selasa',
@@ -112,7 +114,7 @@ $iday = Array(
     'Sabtu'
 );
 
-$jday = Array(
+$jday = array(
     'Pon',
     'Wage',
     'Kliwon',
@@ -120,8 +122,20 @@ $jday = Array(
     'Pahing'
 );
 
+// print_r(hdate(17,8,1945));
+
+// echo "Format Tanggal (delim spasi) -> dd mm yyyy"."\n";
+// echo "Orang Ke-1: ";
+// $date1 = trim(fgets(STDIN));
+// $date1 = explode(" ", $date1);
+// $date1 = hdate($date1[0], $date1[1], $date1[2]);
+// echo "Orang Ke-2: ";
+// $date2 = trim(fgets(STDIN));
+// $date2 = explode(" ", $date2);
+// $date2 = hdate($date2[0], $date2[1], $date2[2]);
+
 if (isset($_POST['submit'])) {
-    
+
     $date1 = explode("-", $_POST['date1']);
     $date2 = explode("-", $_POST['date2']);
 
@@ -129,9 +143,9 @@ if (isset($_POST['submit'])) {
     $date2 = hdate($date2[2], $date2[1], $date2[0]);
 
     $p1['hari'] = $iday[$date1['dow']];
-    $p1['pasaran'] = $jday[$date1['javadow']];
+    $p1['neptu'] = $jday[$date1['javadow']];
     $p2['hari'] = $iday[$date2['dow']];
-    $p2['pasaran'] = $jday[$date2['javadow']];
+    $p2['neptu'] = $jday[$date2['javadow']];
 
     $hari = [
         'Minggu' => 5,
@@ -159,8 +173,8 @@ if (isset($_POST['submit'])) {
     }
 
     foreach ($neptu as $key => $value) {
-        if ($p1['pasaran'] == $key) {
-            $p1['pasaran_val'] = $value;
+        if ($p1['neptu'] == $key) {
+            $p1['neptu_val'] = $value;
             break;
         }
     }
@@ -173,8 +187,8 @@ if (isset($_POST['submit'])) {
     }
 
     foreach ($neptu as $key => $value) {
-        if ($p2['pasaran'] == $key) {
-            $p2['pasaran_val'] = $value;
+        if ($p2['neptu'] == $key) {
+            $p2['neptu_val'] = $value;
             break;
         }
     }
@@ -200,20 +214,29 @@ if (isset($_POST['submit'])) {
         if (in_array($i, array(10, 19, 28)) and $i <= 36) {
             $c = 1;
         }
-        if ($p1['hari_val']+$p1['pasaran_val']+$p2['hari_val']+$p2['pasaran_val'] == $i) {
+        if ($p1['hari_val'] + $p1['neptu_val'] + $p2['hari_val'] + $p2['neptu_val'] == $i) {
             $weton = $jumlahWeton[$c];
+            $p1['sum'] = $p1['hari_val'] + $p1['neptu_val'];
+            $p2['sum'] = $p2['hari_val'] + $p2['neptu_val'];
             break;
         } else {
             $i++;
             $c++;
         }
     }
-
 }
+
+// echo 'Tanggal jawa = '.$iday[ $date['dow'] ].' '.$jday[ $date['javadow'] ].', '.$date['hijriday'].' '.$jmonth[ $date['hijrimonth']-1 ].' '.$date['javayear']."\n";
+
+// echo 'Tanggal 17/08/1945<br>'."\n";
+// echo 'Tanggal umum = '.$iday[ $date['dow'] ].' '.$jday[ $date['javadow'] ].', '.$date['day'].' '.$imonth[ $date['month']-1 ].' '.$date['year']."\n";
+// echo 'Tanggal jawa = '.$iday[ $date['dow'] ].' '.$jday[ $date['javadow'] ].', '.$date['hijriday'].' '.$jmonth[ $date['hijrimonth']-1 ].' '.$date['javayear']."\n";
+// echo 'Tanggal hijriah = '.$aday[ $date['dow'] ].', '.$date['hijriday'].' '.$amonth[ $date['hijrimonth']-1 ].' '.$date['hijriyear']."\n";
 
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -231,7 +254,7 @@ if (isset($_POST['submit'])) {
     <title>Weton</title>
 
     <style>
-        * { 
+        * {
             font-family: 'Quicksand', sans-serif;
             font-size: 15px;
         }
@@ -261,36 +284,36 @@ if (isset($_POST['submit'])) {
             max-width: 680px;
             padding: 0 15px;
         }
-
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <span class="navbar-brand">Hitung Weton</span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Index <span class="sr-only">(current)</span></a>
-                    </li>
-                    <!-- <li class="nav-item dropdown">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="">Index <span class="sr-only">(current)</span></a>
+                </li>
+                <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="x" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">x
                         </a>
                         <div class="dropdown-menu" aria-labelledby="x">
                             <a class="dropdown-item" href=""></a>
                         </div>
                     </li> -->
-                </ul>
-            </div>
+            </ul>
+        </div>
     </nav>
 
     <div class="container-fluid">
         <div class="row mt-2">
             <div class="col justify-content-center">
 
-                <?php if(isset($_POST['submit']) and !empty(isset(($weton)))){ ?>
+                <?php if (isset($_POST['submit']) and !empty(isset(($weton)))) { ?>
                     <?php
 
                     switch ($weton) {
@@ -337,19 +360,55 @@ if (isset($_POST['submit'])) {
                     }
 
                     ?>
-                <div class="alert <?php echo $z ?> alert-dismissible fade show" role="alert">
-                    <strong><?php echo $x ?></strong>. <?php echo $y ?>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                    <div class="alert <?php echo $z ?> alert-dismissible fade show" role="alert">
+                        <table>
+                            <tr>
+                                <td><strong>Orang ke-1 :</strong></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo $date1['day'] . "/" . $date1['month'] . "/" . $date1['year'] ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo $p1['hari'] . " (" . $p1['hari_val'] . ") + " . $p1['neptu'] . " (" . $p1['neptu_val'] . ")" ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo $p1['hari_val'] + $p1['neptu_val'] ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong>-----</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Orang ke-2 :</strong></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo $date2['day'] . "/" . $date2['month'] . "/" . $date2['year'] ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo $p2['hari'] . " (" . $p2['hari_val'] . ") + " . $p2['neptu'] . " (" . $p2['neptu_val'] . ")" ?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo $p2['hari_val'] + $p2['neptu_val'] ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong>-----</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong><?php echo $x . " (" . $i . ")" ?></strong></td>
+                            </tr>
+                        </table>
+                        <br>
+                        <strong><?php echo $x ?></strong>. <?php echo $y ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <?php } else { ?>
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <strong><i class="fa fa-exclamation-circle fa-md"></i> Baca!</strong> Pemahaman ini tidak bisa dijadikan patokan utama dalam kehidupan sehari-hari. Tergantung dari sisi kepercayaan masing-masing.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation-circle fa-md"></i> Baca!</strong> Pemahaman ini tidak bisa dijadikan patokan utama dalam kehidupan sehari-hari. Tergantung dari sisi kepercayaan masing-masing.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <?php } ?>
 
                 <div class="card">
@@ -374,12 +433,12 @@ if (isset($_POST['submit'])) {
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <footer class="footer">
         <div class="container">
-          <span class="text-muted">Made with <span style="color: #e25555;">&#9829;</span> <a href="https://naufalist.com" target="_blank" title="Naufalist">naufalist</a></span>
+            <span class="text-muted">Made with <span style="color: #e25555;">&#9829;</span> <a href="https://naufalist.com" target="_blank" title="Naufalist">naufalist</a></span>
         </div>
     </footer>
 
@@ -389,4 +448,5 @@ if (isset($_POST['submit'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+
 </html>
